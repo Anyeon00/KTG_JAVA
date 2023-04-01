@@ -1,0 +1,98 @@
+import java.util.Queue;
+
+public class GrowableArrayQueue {
+    private static int MAX = 4;
+    private int front;
+    private int rear;
+
+    private int size;
+    private int[] s;
+
+    GrowableArrayQueue(){
+        this.s = new int[MAX];
+        this.front = this.rear = this.size = 0;
+    }
+
+    boolean isFull(){
+        if((rear+1)%s.length == front) return true;
+
+        return false;
+    }
+
+    boolean isEmpty(){
+        if(rear == front) return true;
+
+        return false;
+    }
+
+
+    void add(int n){
+        if(isFull()){
+            int[] newarr = new int[2 * s.length];
+            for (int i = 0; i < size; i++) {
+                newarr[i] = s[(front+i)%s.length];
+            }
+            s = newarr;
+            front = 0;
+            rear = size;
+        }
+        s[rear] = n;
+        rear = (rear+1)%s.length;
+        size++;
+    }
+
+    int remove(){
+        if (isEmpty()) {
+            System.out.println("cant remove: isEmpty");
+            System.exit(-1);
+        }
+        int tmp = s[front];
+        front = (front+1)%s.length;
+        size--;
+        return tmp;
+    }
+
+    public String toString(){
+        String val = "front: " + front + " rear:" + rear + " [";
+        for (int i = 0; i < s.length; i++) {
+            val += s[i] + " ";
+        }
+        val += "]";
+        return val;
+    }
+
+
+    public static void main(String[] args)
+    {
+        GrowableArrayQueue q = new GrowableArrayQueue();
+
+        q.add(10);
+        System.out.println(q);
+        q.add(20);
+        System.out.println(q);
+        q.add(30);
+        System.out.println(q);
+        q.remove();
+        System.out.println(q);
+        q.remove();
+        System.out.println(q);
+        q.add(40);
+        System.out.println(q);
+        q.add(50);
+        System.out.println(q);
+        q.add(60);
+        System.out.println(q);
+
+        for (int i = 0; i < 6; i++) {
+            q.add(i + 7);
+            System.out.println(q);
+        }
+        for(int i = 0; i < 10; i ++){
+            q.remove();
+        }
+        System.out.println(q);
+        for (int i = 0; i < 20; i++) {
+            q.add(100 + i);
+        }
+        System.out.println(q);
+    }}
